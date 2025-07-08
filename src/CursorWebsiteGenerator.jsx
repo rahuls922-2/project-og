@@ -46,12 +46,14 @@ const CursorWebsiteGenerator = () => {
 
   try {
   const baseURL = window.location.hostname === 'localhost'
-    ? 'http://localhost:3000'
-    : 'https://project-og.onrender.com';
+    ? 'http://localhost:3000' // Local testing
+    : 'https://project-og.onrender.com'; // Render backend
 
   const response = await fetch(`${baseURL}/api/generate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({ prompt })
   });
 
@@ -60,69 +62,8 @@ const CursorWebsiteGenerator = () => {
   }
 
   const data = await response.json();
-      
-      // If API fails, use mock data for demo
-      const mockCode = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generated Website</title>
-    <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            margin: 0; 
-            padding: 20px; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        .container { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            text-align: center; 
-        }
-        h1 { 
-            font-size: 3em; 
-            margin-bottom: 20px; 
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        .content { 
-            background: rgba(255,255,255,0.1); 
-            padding: 30px; 
-            border-radius: 15px; 
-            backdrop-filter: blur(10px);
-        }
-        .btn {
-            padding: 12px 24px;
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 10px;
-            transition: transform 0.3s ease;
-        }
-        .btn:hover { transform: translateY(-2px); }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Website Generated!</h1>
-        <div class="content">
-            <p>Your idea: "${prompt}"</p>
-            <p>This is a dynamically generated website based on your prompt.</p>
-            <button class="btn" onclick="alert('Hello from generated site!')">Click Me!</button>
-        </div>
-    </div>
-    <script>
-        console.log('Generated website loaded successfully!');
-    </script>
-</body>
-</html>`;
 
-      const combinedCode = `
+  const combinedCode = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,17 +82,18 @@ const CursorWebsiteGenerator = () => {
 </body>
 </html>`;
 
-setGeneratedCode(combinedCode);
-saveToHistory(prompt, combinedCode);
-setShowPreview(true);
+  setGeneratedCode(combinedCode);
+  saveToHistory(prompt, combinedCode);
+  setShowPreview(true);
 
-    } catch (err) {
-      setError('Generation failed. Please try again.');
-      console.error('Generation error:', err);
-    } finally {
-      setLoading(false);
-    }
+} catch (err) {
+  setError('Generation failed. Please try again.');
+  console.error('Generation error:', err);
+} finally {
+  setLoading(false);
+}
   };
+
 
   // Download as ZIP
   const downloadZip = () => {
