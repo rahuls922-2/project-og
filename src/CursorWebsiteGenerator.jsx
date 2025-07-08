@@ -44,19 +44,22 @@ const CursorWebsiteGenerator = () => {
     setGeneratedCode('');
     setShowPreview(false);
 
-    try {
-      // Mock API call - replace with actual Gemini API endpoint
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt })
-      });
+  try {
+  const baseURL = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://project-og.onrender.com';
 
-      if (!response.ok) {
-        throw new Error('Failed to generate website');
-      }
+  const response = await fetch(`${baseURL}/api/generate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt })
+  });
 
-      const data = await response.json();
+  if (!response.ok) {
+    throw new Error('Failed to generate website');
+  }
+
+  const data = await response.json();
       
       // If API fails, use mock data for demo
       const mockCode = `
